@@ -1,0 +1,39 @@
+-- Spasm But As A Toggle From Infinite Yield Made By Wood | discord is nnatsukawa | Credits to Infinite Yield For This Anyways cool igs?
+local UserInputService = game:GetService("UserInputService")
+local toggled = false
+local keybind = Enum.KeyCode.X -- Change this key if needed
+local Spasm, SpasmAnim
+
+local function toggleSpasm(speaker)
+    if not speaker or not speaker.Character then return end
+    
+    if speaker.Character:FindFirstChildOfClass("Humanoid").RigType ~= Enum.HumanoidRigType.R6 then
+        notify("R6 Required", "This command requires the R6 rig type")
+        return
+    end
+    
+    if toggled then
+        if Spasm then
+            Spasm:Stop()
+            SpasmAnim:Destroy()
+        end
+        toggled = false
+    else
+        local pchar = speaker.Character
+        local AnimationId = "33796059"
+        SpasmAnim = Instance.new("Animation")
+        SpasmAnim.AnimationId = "rbxassetid://" .. AnimationId
+        Spasm = pchar:FindFirstChildOfClass("Humanoid"):LoadAnimation(SpasmAnim)
+        Spasm:Play()
+        Spasm:AdjustSpeed(99)
+        toggled = true
+    end
+end
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == keybind then
+        toggleSpasm(game.Players.LocalPlayer)
+    end
+end)
+
+
